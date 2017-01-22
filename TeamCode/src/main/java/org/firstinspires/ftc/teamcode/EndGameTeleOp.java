@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by Nishka on 07/01/17.
@@ -13,37 +14,38 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name = "NewMap", group = "agroup")
 
-public class NewMap_TeleOp extends LinearOpMode
+public class EndGameTeleOp extends LinearOpMode
 {
-
+    //DRIVING
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorFrontRight;
     private DcMotor motorBackRight;
 
-    private DcMotor motorShootLeft;
-    private DcMotor motorShootRight;
+    //ARM RELEASE
+    private Servo ArmReleaseMech;
+
+    //CAPPING
+    private DcMotor BallVertical;
 
     @Override
     public void runOpMode() throws InterruptedException
     {
+        //DRIVING MOTORS
         motorFrontLeft = hardwareMap.dcMotor.get("MC1M1");
         motorBackLeft = hardwareMap.dcMotor.get("MC1M2");
         motorFrontRight = hardwareMap.dcMotor.get("MC2M1");
         motorBackRight = hardwareMap.dcMotor.get("MC2M2");
 
-        motorShootLeft = hardwareMap.dcMotor.get("MC3M1");
-        motorShootRight = hardwareMap.dcMotor.get("MC3M2");
+        //ARM RELEASE MOTOR
+        ArmReleaseMech = hardwareMap.servo.get("SC1M1");
+
+        //CAPPING MOTOR
+        BallVertical = hardwareMap.dcMotor.get("MC3M1");
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        /*
-        motorShootLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorShootRight.setDirection(DcMotor.Direction.REVERSE);
-        */
-
-        //servomotor = hardwareMap.servo.get("servoM1");
         waitForStart();
 
         while(opModeIsActive()) {
@@ -75,7 +77,6 @@ public class NewMap_TeleOp extends LinearOpMode
 
             //NON CARDINAL DIRECTIONS RIGHT STICK
 
-
             //LEFT
             if (gamepad1.right_stick_x < -0.1 && gamepad1.right_stick_y == 0 && !gamepad1.dpad_left && !gamepad1.dpad_up && !gamepad1.dpad_down && !gamepad1.dpad_right && gamepad1.left_trigger == 0) {
                 motorFrontLeft.setPower(-gamepad1.right_trigger);
@@ -92,7 +93,6 @@ public class NewMap_TeleOp extends LinearOpMode
                 motorFrontRight.setPower(-gamepad1.right_trigger);
                 motorBackRight.setPower(gamepad1.right_trigger);
             }
-
 
             //NON CARDINAL DIRECTIONS LEFT STICK
 
@@ -143,43 +143,6 @@ public class NewMap_TeleOp extends LinearOpMode
                 }
             }
 
-
-
-            /*
-            //DIAGONAL FORWARD LEFT
-            if (gamepad1.left_stick_x == -1 && gamepad1.left_stick_y == 1 && !gamepad1.dpad_left && gamepad1.dpad_up && !gamepad1.dpad_right && !gamepad1.dpad_down && gamepad1.left_trigger == 0) {
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(gamepad1.right_trigger);
-                motorFrontRight.setPower(gamepad1.right_trigger);
-                motorBackRight.setPower(0);
-            }
-           //DIAGONAL FORWARD RIGHT
-            if (gamepad1.left_stick_x == 1 && gamepad1.left_stick_y == 1 && !gamepad1.dpad_right && gamepad1.dpad_up && !gamepad1.dpad_down && !gamepad1.dpad_left && gamepad1.left_trigger == 0) {
-                motorFrontLeft.setPower(gamepad1.right_trigger);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                motorBackRight.setPower(gamepad1.right_trigger);
-
-            }
-
-           //DIAGONAL BACKWARD LEFT
-            if (gamepad1.left_stick_x == -1 && gamepad1.left_stick_y == -1 && !gamepad1.dpad_left && gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_right && gamepad1.left_trigger == 0) {
-                motorFrontLeft.setPower(-gamepad1.right_trigger);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                motorBackRight.setPower(-gamepad1.right_trigger);
-
-            }
-
-           //DIAGONAL BACKWARD RIGHT
-            if (gamepad1.left_stick_x == 1 && gamepad1.left_stick_y == -1 && !gamepad1.dpad_down && gamepad1.dpad_right && !gamepad1.dpad_left && !gamepad1.dpad_up && gamepad1.left_trigger == 0) {
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(-gamepad1.right_trigger);
-                motorFrontRight.setPower(-gamepad1.right_trigger);
-                motorBackRight.setPower(0);
-
-            }
-*/
             //AXIS TURNS
 
             //TURN LEFT
@@ -209,41 +172,38 @@ public class NewMap_TeleOp extends LinearOpMode
                 motorBackRight.setPower(0);
             }
 
+            //ARM RELEASE (need to test)
 
-            //SHOOTING
-
-            //SLOW
-            if (gamepad1.a && !gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && gamepad1.left_trigger == 0 && !gamepad1.x && !gamepad1.y && !gamepad1.b) {
-                motorShootLeft.setPower(0.25);
-                motorShootRight.setPower(0.25);
+            //OPEN
+            if (gamepad2.dpad_left && !gamepad2.dpad_up && !gamepad2.dpad_down && !gamepad2.dpad_right) {
+                ArmReleaseMech.setPosition(0.25);
             }
 
-            //MEDIUM-SLOW
-            if (gamepad1.x && !gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && gamepad1.left_trigger == 0 && !gamepad1.a && !gamepad1.y && !gamepad1.b) {
-                motorShootLeft.setPower(0.5);
-                motorShootRight.setPower(0.5);
+            //CLOSE
+            if (gamepad2.dpad_right && !gamepad2.dpad_down && !gamepad2.dpad_up && !gamepad2.dpad_left) {
+                ArmReleaseMech.setPosition(0.75);
             }
-            motorShootRight.setPower(0.75);
 
+            //BALL CAPPING
 
-            //MEDIUM-FAST
-            if (gamepad1.y && !gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && gamepad1.left_trigger == 0 && !gamepad1.a && !gamepad1.x && !gamepad1.b) {
-                motorShootLeft.setPower(0.75);
-                motorShootRight.setPower(0.75);
-
+            //ELEVATE
+            if (gamepad2.dpad_up && !gamepad2.dpad_down && !gamepad2.dpad_right && !gamepad2.dpad_left) {
+                BallVertical.setPower(0.75);
             }
-            //FAST
-            if (gamepad1.b && !gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && gamepad1.left_trigger == 0 && !gamepad1.a && !gamepad1.y && !gamepad1.x) {
-                motorShootLeft.setPower(1);
-                motorShootRight.setPower(1);
+
+            //GO DOWN
+            if (gamepad2.dpad_down && !gamepad2.dpad_right && !gamepad2.dpad_up && !gamepad2.dpad_left) {
+                BallVertical.setPower(-0.75);
             }
 
             idle();
 
-
         }
 
     }
+
+
+
 
 
 }
