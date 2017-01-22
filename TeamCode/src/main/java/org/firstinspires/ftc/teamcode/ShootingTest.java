@@ -60,7 +60,6 @@ public class ShootingTest extends LinearOpMode {
             }
             motorShootRight.setPower(0.75);
 
-
             //MEDIUM-FAST
             if (gamepad1.y && !gamepad1.dpad_down && !gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && gamepad1.left_trigger == 0 && !gamepad1.a && !gamepad1.x && !gamepad1.b) {
                 motorShootLeft.setPower(0.75);
