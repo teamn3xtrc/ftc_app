@@ -23,7 +23,8 @@ public class EndGameTeleOp extends LinearOpMode
     private DcMotor motorBackRight;
 
     //ARM RELEASE
-    private Servo ArmReleaseMech;
+    private Servo ArmRelease1;
+    private Servo ArmRelease2;
 
     //CAPPING
     private DcMotor BallVertical;
@@ -31,7 +32,12 @@ public class EndGameTeleOp extends LinearOpMode
     //SHOOTING
     private DcMotor motorShootLeft;
     private DcMotor motorShootRight;
-    private Servo motorShootAngle;
+
+    //COLLECTOR
+    private DcMotor motorCollector;
+
+    //ELEVATOR
+    private Servo ElevatorMech;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -42,16 +48,22 @@ public class EndGameTeleOp extends LinearOpMode
         motorFrontRight = hardwareMap.dcMotor.get("MC2M1");
         motorBackRight = hardwareMap.dcMotor.get("MC2M2");
 
-        //ARM RELEASE MOTOR
-        ArmReleaseMech = hardwareMap.servo.get("SC1S1");
+        //SHOOTING
+        motorShootLeft = hardwareMap.dcMotor.get("MC3ShootLeft");
+        motorShootRight = hardwareMap.dcMotor.get("MC3ShootRight");
+
+        //COLLECTOR
+        motorCollector = hardwareMap.dcMotor.get("collectorMotor");
 
         //CAPPING MOTOR
-        BallVertical = hardwareMap.dcMotor.get("MC4M1");
+        BallVertical = hardwareMap.dcMotor.get("cappingMotor");
 
-        //SHOOTING
-        motorShootLeft = hardwareMap.dcMotor.get("MC3M1");
-        motorShootRight = hardwareMap.dcMotor.get("MC3M1");
-        motorShootAngle = hardwareMap.servo.get("SC1S2");
+        //ARM RELEASE MOTOR
+        ArmRelease1 = hardwareMap.servo.get("armRelease1");
+        ArmRelease2 = hardwareMap.servo.get("armRelease2");
+
+        //ELEVATOR
+        ElevatorMech = hardwareMap.servo.get("elevatorMotor");
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -195,27 +207,29 @@ public class EndGameTeleOp extends LinearOpMode
             //ARM RELEASE (need to test)
 
             //OPEN
-            if (gamepad2.dpad_left && !gamepad2.dpad_up && !gamepad2.dpad_down && !gamepad2.dpad_right)
+            if (gamepad2.left_bumper)
             {
-                ArmReleaseMech.setPosition(0.25);
+                ArmRelease1.setPosition(0.25);
+                ArmRelease2.setPosition(0.25);
             }
 
             //CLOSE
-            if (gamepad2.dpad_right && !gamepad2.dpad_down && !gamepad2.dpad_up && !gamepad2.dpad_left)
+            if (gamepad2.right_bumper)
             {
-                ArmReleaseMech.setPosition(0.75);
+                ArmRelease1.setPosition(0.75);
+                ArmRelease2.setPosition(0.75);
             }
 
             //BALL CAPPING
 
-            //ELEVATE
-            if (gamepad2.dpad_up && !gamepad2.dpad_down && !gamepad2.dpad_right && !gamepad2.dpad_left)
+            //WIND
+            if (gamepad2.left_stick_y < 0)
             {
                 BallVertical.setPower(0.75);
             }
 
-            //GO DOWN
-            if (gamepad2.dpad_down && !gamepad2.dpad_right && !gamepad2.dpad_up && !gamepad2.dpad_left)
+            //UNWIND
+            if (gamepad2.left_stick_y > 0)
             {
                 BallVertical.setPower(-0.75);
             }
@@ -225,44 +239,55 @@ public class EndGameTeleOp extends LinearOpMode
             //SLOW
             if (gamepad2.a)
             {
-                motorShootLeft.setPower(0.25);
-                motorShootRight.setPower(0.25);
-            }
-
-            //MEDIUM-SLOW
-            if (gamepad1.x)
-            {
                 motorShootLeft.setPower(0.5);
                 motorShootRight.setPower(0.5);
             }
-            motorShootRight.setPower(0.75);
 
-            //MEDIUM-FAST
-            if (gamepad1.y)
-            {
-                motorShootLeft.setPower(0.75);
-                motorShootRight.setPower(0.75);
-
-            }
             //FAST
-            if (gamepad1.b)
+            if (gamepad2.b)
             {
                 motorShootLeft.setPower(1);
                 motorShootRight.setPower(1);
             }
 
-            //SHOOTING ANGLE
-
-            //DOWN
-            if (gamepad2.left_bumper && !gamepad2.right_bumper)
+            //STOP
+            if (gamepad2.x)
             {
-                motorShootAngle.setPosition(0.1);
+                motorShootLeft.setPower(0);
+                motorShootRight.setPower(0);
+            }
+            if (gamepad2.y)
+            {
+                motorShootLeft.setPower(0);
+                motorShootRight.setPower(0);
             }
 
-            //UP
-            if (gamepad2.right_bumper && !gamepad2.left_bumper)
+            //COLLECT
+
+            //START
+            if (gamepad2.dpad_right)
             {
-                motorShootAngle.setPosition(0.9);
+                motorCollector.setPower(1);
+            }
+
+            //STOP
+            if (gamepad2.dpad_left)
+            {
+                motorCollector.setPower(0);
+            }
+
+            //BALL ELEVATOR
+
+            //START
+            if (gamepad2.dpad_up)
+            {
+                ElevatorMech.setPosition(1);
+            }
+
+            //STOP
+            if (gamepad2.dpad_down)
+            {
+                ElevatorMech.setPosition(0.5);
             }
 
             idle();
