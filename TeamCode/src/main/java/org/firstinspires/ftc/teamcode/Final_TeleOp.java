@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "final_start_teleOp", group = "agroup")
+@TeleOp(name = "final_start_TeleOp", group = "agroup")
 
 public class Final_TeleOp extends LinearOpMode {
     //constants
@@ -74,7 +74,7 @@ public class Final_TeleOp extends LinearOpMode {
                 motorBackRight.setPower(0);
             }
 
-            //Left Trigger Emergency Break
+            //LT (E-Break)
             if (gamepad1.left_trigger > 0) {
                 motorFrontLeft.setPower(0);
                 motorFrontRight.setPower(0);

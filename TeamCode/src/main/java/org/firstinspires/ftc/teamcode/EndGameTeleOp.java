@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Edited by Shivaan and Ansh on several occasions after that.
  */
 
-@TeleOp(name = "NewMap", group = "agroup")
+@TeleOp(name = "EndGame_30sec", group = "agroup")
 
 public class EndGameTeleOp extends LinearOpMode
 {
