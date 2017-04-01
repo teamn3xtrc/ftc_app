@@ -16,7 +16,7 @@ public class NewLayout_TeleOp extends LinearOpMode
     private static DcMotor motorBackLeft;
     private static DcMotor motorFrontRight;
     private static DcMotor motorBackRight;
-    private static DcMotor motorShoot;
+    //private static DcMotor motorShoot;
 
     private double deadzoneval;
     private double negdeadzoneval;
@@ -43,7 +43,7 @@ public class NewLayout_TeleOp extends LinearOpMode
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //Shooting Motor
-        motorShoot = hardwareMap.dcMotor.get("MC3Shoot");
+        //motorShoot = hardwareMap.dcMotor.get("MC3Shoot");
 
         /*
         //Collection Motor && Lifting Motor

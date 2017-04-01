@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "final_start_teleOp", group = "agroup")
+@TeleOp(name = "final_startteleOp", group = "agroup")
 
 public class blueTeamAlliance extends LinearOpMode {
 

@@ -90,12 +90,12 @@ public class AutoOtherSide extends LinearOpMode
         servoArmRaise1= hardwareMap.servo.get("servoArmRaise1");
         servoArmRaise2= hardwareMap.servo.get("servoArmRaise2");
 
-        servoArmRaise1.setPosition(0.6666);
-        servoArmRaise2.setPosition(0.3);
+        servoArmRaise1.setPosition(0.6);
+        servoArmRaise2.setPosition(0.35);
 
         servoElevate.setPosition(0.5);
 
-        BeaconServo.setPosition(0.74);
+        BeaconServo.setPosition(1);
 
         waitForStart();
 
@@ -193,14 +193,14 @@ public class AutoOtherSide extends LinearOpMode
 
         if(((colorSensor.blue()+colorSensor.blue())/2)<=((colorSensor.red()+colorSensor.red())/2))
         {
-            BeaconServo.setPosition(0.);
+            BeaconServo.setPosition(0.4);
             telemetry.addData("blue","true");
             telemetry.update();
         }
         else
         {
             DRIVEBACKWARD(800);
-            BeaconServo.setPosition(0.);
+            BeaconServo.setPosition(0.4);
             telemetry.addData("red","true");
             telemetry.update();
         }

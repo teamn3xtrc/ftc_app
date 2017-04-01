@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Nishka on 22/01/17.
  */
 
-@TeleOp(name = "final tele op", group = "agroup")
+@TeleOp(name = "2MinPer_start_teleOp", group = "agroup")
 
-public class finalStartingTeleOp extends LinearOpMode
+public class finalStarting extends LinearOpMode
 {
     //constants
     final static double FAST_SPEED = 1;
@@ -92,12 +92,12 @@ public class finalStartingTeleOp extends LinearOpMode
         BeaconServo= hardwareMap.servo.get("beacon");
 
         //set up servos
-        servoArmRaise1.setPosition(0.6666);
-        servoArmRaise2.setPosition(0.3);
+        servoArmRaise1.setPosition(0.6);
+        servoArmRaise2.setPosition(0.35);
 
         servoElevate.setPosition(0.5);
 
-        BeaconServo.setPosition(0.74);
+        BeaconServo.setPosition(1);
 
         waitForStart();
         while(opModeIsActive())
@@ -123,6 +123,9 @@ public class finalStartingTeleOp extends LinearOpMode
                     motorBackLeft.setPower(0);
                     motorBackRight.setPower(0);
                 }
+
+
+
 
                 // FORWARD
                 if(gamepad1.dpad_up && !gamepad1.dpad_left && !gamepad1.dpad_right && !gamepad1.dpad_down && !gamepad1.a && !gamepad1.b && !gamepad1.x && !gamepad1.y && (gamepad1.right_stick_x>-0.1 && gamepad1.right_stick_x<0.1) && (gamepad1.left_stick_x>-0.1 && gamepad1.left_stick_x<0.1) && (gamepad1.left_stick_y>-0.1 && gamepad1.left_stick_y<0.1)&& gamepad1.left_trigger==0)
@@ -160,6 +163,9 @@ public class finalStartingTeleOp extends LinearOpMode
                     motorBackRight.setPower(-gamepad1.right_trigger);
                 }
 
+
+
+
                 // SWAYING LEFT AND RIGHT
 
 
@@ -180,6 +186,9 @@ public class finalStartingTeleOp extends LinearOpMode
                     motorFrontRight.setPower(gamepad1.right_trigger);
                     motorBackRight.setPower(-gamepad1.right_trigger);
                 }
+
+
+
 
 
                 // DIAGONALS
@@ -325,33 +334,42 @@ public class finalStartingTeleOp extends LinearOpMode
             //OPEN
             if (gamepad2.left_trigger>0)
             {
-                servoArmRaise1.setPosition(0.9);
-                servoArmRaise2.setPosition(0.1);
+                servoArmRaise1.setPosition(1);
+                servoArmRaise2.setPosition(0);
             }
 
             //CLOSE
             if (gamepad2.right_trigger>0)
             {
-                servoArmRaise1.setPosition(0.6666);
-                servoArmRaise2.setPosition(0.3);
+                servoArmRaise1.setPosition(0.6);
+                servoArmRaise2.setPosition(0.35);
             }
 
             //BALL CAPPING
-            if(gamepad2.left_stick_y<0.1 && gamepad2.left_stick_y>-0.1)
-            {
-                motorCapLift.setPower(0);
 
+            //WIND
+            if (gamepad2.left_stick_y < -0.1)
+            {
+                motorCapLift.setPower(0.75);
             }
             else
             {
-                motorCapLift.setPower(-gamepad2.left_stick_y);
+                //UNWIND
+                if (gamepad2.left_stick_y > 0.1)
+                {
+                    motorCapLift.setPower(-0.75);
+                }
+                else
+                {
+                    motorCapLift.setPower(0);
+                }
             }
 
             //Beacon
 
             if (gamepad2.right_stick_x < -0.1)
             { //close
-                BeaconServo.setPosition(0.74);
+                BeaconServo.setPosition(1);
             }
             else
             {
